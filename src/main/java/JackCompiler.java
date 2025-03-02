@@ -23,7 +23,7 @@ public class JackCompiler {
         for (Path path : filesToParse) {
             String fileName = path.getFileName().toString();
             int extIndex = fileName.lastIndexOf('.');
-            Path fileOutputPath = Paths.get(outputPath.toString(), fileName.substring(0, extIndex) + ".xml");
+            Path fileOutputPath = Paths.get(outputPath.toString(), fileName.substring(0, extIndex) + ".vm");
             JackTokenizer tokenizer = new JackTokenizer(path);
             try (CompilationEngine engine = new CompilationEngine(tokenizer.generateTokens(), fileOutputPath)) {
                 engine.compileClass();

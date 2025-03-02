@@ -12,8 +12,8 @@ public class CompilationEngine implements AutoCloseable {
     private static final String USED_USAGE = "used";
 
     private final List<JackToken> tokens;
-    private final BufferedWriter writer;
-    //private final VMWriter vmWriter;
+//    private final BufferedWriter writer;
+    private final VMWriter vmWriter;
 
     private final SymbolTable symbolTable;
 
@@ -23,15 +23,15 @@ public class CompilationEngine implements AutoCloseable {
 
     public CompilationEngine(List<JackToken> tokens, Path outputPath) throws IOException {
         this.tokens = tokens;
-        this.writer = Files.newBufferedWriter(outputPath);
-        //this.vmWriter = new VMWriter(outputPath);
+        //this.writer = Files.newBufferedWriter(outputPath);
+        this.vmWriter = new VMWriter(outputPath);
         this.symbolTable = new SymbolTable();
     }
 
     public void compileClass() throws IOException {
-        writer.write("<class>");
-        writer.newLine();
-        indentDepth++;
+//        writer.write("<class>");
+//        writer.newLine();
+//        indentDepth++;
 
         process(JackKeywordType.CLASS.name().toLowerCase());
         symbolTable.setClassName(tokens.get(i).getLexeme());
@@ -51,14 +51,14 @@ public class CompilationEngine implements AutoCloseable {
         process("}");
 
         indentDepth--;
-        writer.write("</class>");
-        writer.newLine();
+//        writer.write("</class>");
+//        writer.newLine();
     }
 
     private void compileClassVarDec() throws IOException {
-        printLine("<classVarDec>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<classVarDec>");
+//        writer.newLine();
+//        indentDepth++;
 
         process(JackKeywordType.STATIC.name().toLowerCase(), JackKeywordType.FIELD.name().toLowerCase());
         SymbolTable.VariableKind kind = tokens.get(i - 1).getLexeme().equals(JackKeywordType.STATIC.name().toLowerCase()) ?
@@ -83,15 +83,15 @@ public class CompilationEngine implements AutoCloseable {
         }
         process(";");
 
-        indentDepth--;
-        printLine("</classVarDec>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</classVarDec>");
+//        writer.newLine();
     }
 
     private void compileSubroutineDec() throws IOException {
-        printLine("<subroutineDec>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<subroutineDec>");
+//        writer.newLine();
+//        indentDepth++;
 
         symbolTable.reset();
         symbolTable.define("this", symbolTable.getClassName(), SymbolTable.VariableKind.ARG);
@@ -108,15 +108,15 @@ public class CompilationEngine implements AutoCloseable {
         process(")");
         compileSubroutineBody();
 
-        indentDepth--;
-        printLine("</subroutineDec>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</subroutineDec>");
+//        writer.newLine();
     }
 
     private void compileParameterList() throws IOException {
-        printLine("<parameterList>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<parameterList>");
+//        writer.newLine();
+//        indentDepth++;
 
         boolean first = true;
         while (!tokens.get(i).getLexeme().equals(")")) {
@@ -137,15 +137,15 @@ public class CompilationEngine implements AutoCloseable {
             };
         }
 
-        indentDepth--;
-        printLine("</parameterList>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</parameterList>");
+//        writer.newLine();
     }
 
     private void compileSubroutineBody() throws IOException {
-        printLine("<subroutineBody>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<subroutineBody>");
+//        writer.newLine();
+//        indentDepth++;
 
         process("{");
         while ((tokens.get(i).getLexeme().equals(JackKeywordType.VAR.name().toLowerCase()))) {
@@ -154,15 +154,15 @@ public class CompilationEngine implements AutoCloseable {
         compileStatements();
         process("}");
 
-        indentDepth--;
-        printLine("</subroutineBody>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</subroutineBody>");
+//        writer.newLine();
     }
 
     private void compileVarDec() throws IOException {
-        printLine("<varDec>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<varDec>");
+//        writer.newLine();
+//        indentDepth++;
 
         process("var");
         boolean processToken = processType() || processIdentifier(CLASS_CATEGORY, USED_USAGE);
@@ -185,15 +185,15 @@ public class CompilationEngine implements AutoCloseable {
         }
         process(";");
 
-        indentDepth--;
-        printLine("</varDec>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</varDec>");
+//        writer.newLine();
     }
 
     private void compileStatements() throws IOException {
-        printLine("<statements>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<statements>");
+//        writer.newLine();
+//        indentDepth++;
 
         boolean noMoreStatements = false;
         do {
@@ -219,15 +219,15 @@ public class CompilationEngine implements AutoCloseable {
             }
         } while (!noMoreStatements);
 
-        indentDepth--;
-        printLine("</statements>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</statements>");
+//        writer.newLine();
     }
 
     private void compileLetStatement() throws IOException {
-        printLine("<letStatement>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<letStatement>");
+//        writer.newLine();
+//        indentDepth++;
 
         process("let");
 
@@ -245,15 +245,15 @@ public class CompilationEngine implements AutoCloseable {
         compileExpression();
         process(";");
 
-        indentDepth--;
-        printLine("</letStatement>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</letStatement>");
+//        writer.newLine();
     }
 
     private void compileIfStatement() throws IOException {
-        printLine("<ifStatement>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<ifStatement>");
+//        writer.newLine();
+//        indentDepth++;
 
         process("if");
         process("(");
@@ -268,15 +268,15 @@ public class CompilationEngine implements AutoCloseable {
             compileStatements();
             process("}");
         }
-        indentDepth--;
-        printLine("</ifStatement>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</ifStatement>");
+//        writer.newLine();
     }
 
     private void compileWhileStatement() throws IOException {
-        printLine("<whileStatement>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<whileStatement>");
+//        writer.newLine();
+//        indentDepth++;
 
         process("while");
         process("(");
@@ -286,15 +286,15 @@ public class CompilationEngine implements AutoCloseable {
         compileStatements();
         process("}");
 
-        indentDepth--;
-        printLine("</whileStatement>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</whileStatement>");
+//        writer.newLine();
     }
 
     private void compileDoStatement() throws IOException {
-        printLine("<doStatement>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<doStatement>");
+//        writer.newLine();
+//        indentDepth++;
 
         process("do");
         String category = SUBROUTINE_CATEGORY;
@@ -315,15 +315,15 @@ public class CompilationEngine implements AutoCloseable {
         process(")");
         process(";");
 
-        indentDepth--;
-        printLine("</doStatement>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</doStatement>");
+//        writer.newLine();
     }
 
     private void compileReturnStatement() throws IOException {
-        printLine("<returnStatement>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<returnStatement>");
+//        writer.newLine();
+//        indentDepth++;
 
         process("return");
         if (!tokens.get(i).getLexeme().equals(";")) {
@@ -331,15 +331,15 @@ public class CompilationEngine implements AutoCloseable {
         }
         process(";");
 
-        indentDepth--;
-        printLine("</returnStatement>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</returnStatement>");
+//        writer.newLine();
     }
 
     private int compileExpressionList() throws IOException {
-        printLine("<expressionList>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<expressionList>");
+//        writer.newLine();
+//        indentDepth++;
 
         int count = 0;
         boolean first = true;
@@ -353,31 +353,31 @@ public class CompilationEngine implements AutoCloseable {
             count++;
         }
 
-        indentDepth--;
-        printLine("</expressionList>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</expressionList>");
+//        writer.newLine();
         return count;
     }
 
     private void compileExpression() throws IOException {
-        printLine("<expression>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<expression>");
+//        writer.newLine();
+//        indentDepth++;
 
         compileTerm();
         while (processBinaryOperator()) {
             compileTerm();
         }
 
-        indentDepth--;
-        printLine("</expression>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</expression>");
+//        writer.newLine();
     }
 
     private void compileTerm() throws IOException {
-        printLine("<term>");
-        writer.newLine();
-        indentDepth++;
+//        printLine("<term>");
+//        writer.newLine();
+//        indentDepth++;
 
         String varName = tokens.get(i).getLexeme();
         SymbolTable.VariableKind variableKind = symbolTable.kindOf(varName);
@@ -429,22 +429,22 @@ public class CompilationEngine implements AutoCloseable {
 
         }
 
-        indentDepth--;
-        printLine("</term>");
-        writer.newLine();
+//        indentDepth--;
+//        printLine("</term>");
+//        writer.newLine();
     }
 
     public void close() throws IOException {
-        writer.close();
-        //vmWriter.close();
+//        writer.close();
+        vmWriter.close();
     }
 
-    private void printLine(String str) throws IOException {
-        for (int i = 0; i < indentDepth; i++) {
-            writer.write('\t');
-        }
-        writer.write(str);
-    }
+//    private void printLine(String str) throws IOException {
+//        for (int i = 0; i < indentDepth; i++) {
+//            writer.write('\t');
+//        }
+//        writer.write(str);
+//    }
 
     private void process(String... token) throws IOException {
         for (String str : token) {
@@ -482,10 +482,10 @@ public class CompilationEngine implements AutoCloseable {
     private void parseCurrentToken() throws IOException {
         JackToken currentToken = tokens.get(i);
         String tag = currentToken.getType().getValue();
-        printLine("<" + tag + ">");
-        writer.write(escapeSymbol(currentToken.getLexeme()));
-        writer.write("</" + tag + ">");
-        writer.newLine();
+//        printLine("<" + tag + ">");
+//        writer.write(escapeSymbol(currentToken.getLexeme()));
+//        writer.write("</" + tag + ">");
+//        writer.newLine();
         i++; // go to the next token
     }
 
@@ -493,30 +493,30 @@ public class CompilationEngine implements AutoCloseable {
         JackToken currentToken = tokens.get(i);
         int index = symbolTable.indexOf(currentToken.getLexeme());
         String tag = currentToken.getType().getValue();
-        printLine("<" + tag + ">");
-        writer.newLine();
-        indentDepth++;
-        printLine("<name>");
-        writer.write(currentToken.getLexeme());
-        writer.write("</name>");
-        writer.newLine();
-        printLine("<category>");
-        writer.write(category);
-        writer.write("</category>");
-        writer.newLine();
-        if (index != -1) {
-            printLine("<index>");
-            writer.write(Integer.toString(index));
-            writer.write("</index>");
-            writer.newLine();
-        }
-        printLine("<usage>");
-        writer.write(usage);
-        writer.write("</usage>");
-        writer.newLine();
-        indentDepth--;
-        printLine("</" + tag + ">");
-        writer.newLine();
+//        printLine("<" + tag + ">");
+//        writer.newLine();
+//        indentDepth++;
+//        printLine("<name>");
+//        writer.write(currentToken.getLexeme());
+//        writer.write("</name>");
+//        writer.newLine();
+//        printLine("<category>");
+//        writer.write(category);
+//        writer.write("</category>");
+//        writer.newLine();
+//        if (index != -1) {
+//            printLine("<index>");
+//            writer.write(Integer.toString(index));
+//            writer.write("</index>");
+//            writer.newLine();
+//        }
+//        printLine("<usage>");
+//        writer.write(usage);
+//        writer.write("</usage>");
+//        writer.newLine();
+//        indentDepth--;
+//        printLine("</" + tag + ">");
+//        writer.newLine();
         i++; // go to the next token
     }
 

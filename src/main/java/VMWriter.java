@@ -10,6 +10,10 @@ public class VMWriter implements AutoCloseable {
         this.writer = Files.newBufferedWriter(outputPath);
     }
 
+    public void newLine() throws IOException {
+        writer.newLine();
+    }
+
     public void writePush(MemorySegment segment, int index) throws IOException {
         oneLine("push " + segment.getValue() + " " + index);
     }
