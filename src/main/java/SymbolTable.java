@@ -3,6 +3,7 @@ import java.util.HashMap;
 public class SymbolTable {
     private final HashMap<String, VariableInfo> classSymbolTable;
     private final HashMap<String, VariableInfo> subroutineSymbolTable;
+    private String className;
     private int fieldCount, staticCount, argCount, localCount;
 
     public SymbolTable() {
@@ -12,6 +13,14 @@ public class SymbolTable {
         staticCount = 0;
         argCount = 0;
         localCount = 0;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getClassName() {
+        return className;
     }
 
     public void reset() {

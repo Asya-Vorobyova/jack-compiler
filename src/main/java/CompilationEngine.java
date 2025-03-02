@@ -13,6 +13,7 @@ public class CompilationEngine implements AutoCloseable {
 
     private final List<JackToken> tokens;
     private final BufferedWriter writer;
+    //private final VMWriter vmWriter;
 
     private final SymbolTable symbolTable;
 
@@ -23,6 +24,7 @@ public class CompilationEngine implements AutoCloseable {
     public CompilationEngine(List<JackToken> tokens, Path outputPath) throws IOException {
         this.tokens = tokens;
         this.writer = Files.newBufferedWriter(outputPath);
+        //this.vmWriter = new VMWriter(outputPath);
         this.symbolTable = new SymbolTable();
     }
 
@@ -32,6 +34,7 @@ public class CompilationEngine implements AutoCloseable {
         indentDepth++;
 
         process(JackKeywordType.CLASS.name().toLowerCase());
+        symbolTable.setClassName(tokens.get(i).getLexeme());
         if (!processIdentifier(CLASS_CATEGORY, DECLARED_USAGE)) {
             throw new RuntimeException("Unmatched token: " + tokens.get(i).getLexeme());
         }
@@ -91,6 +94,7 @@ public class CompilationEngine implements AutoCloseable {
         indentDepth++;
 
         symbolTable.reset();
+        symbolTable.define("this", symbolTable.getClassName(), SymbolTable.VariableKind.ARG);
 
         process(JackKeywordType.CONSTRUCTOR.name().toLowerCase(), JackKeywordType.METHOD.name().toLowerCase(),
                 JackKeywordType.FUNCTION.name().toLowerCase());
@@ -432,6 +436,7 @@ public class CompilationEngine implements AutoCloseable {
 
     public void close() throws IOException {
         writer.close();
+        //vmWriter.close();
     }
 
     private void printLine(String str) throws IOException {
