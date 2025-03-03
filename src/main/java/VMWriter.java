@@ -50,6 +50,25 @@ public class VMWriter implements AutoCloseable {
         oneLine("return");
     }
 
+    public void pushString(String string) throws IOException {
+        oneLine("push constant " + string.length());
+        oneLine("call String.new 1");
+        for (char c : string.toCharArray()) {
+            oneLine("push constant " + (int) c);
+            oneLine("call String.appendChar 2");
+        }
+    }
+
+    public void writeMath(String op) throws IOException {
+        switch (op) {
+            case "*":
+                oneLine("call Math.multiply 2");
+                break;
+            case "/":
+                oneLine("call Math.divide 2");
+        }
+    }
+
     @Override
     public void close() throws IOException {
         writer.close();

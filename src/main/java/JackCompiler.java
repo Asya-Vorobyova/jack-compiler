@@ -28,22 +28,6 @@ public class JackCompiler {
             try (CompilationEngine engine = new CompilationEngine(tokenizer.generateTokens(), fileOutputPath)) {
                 engine.compileClass();
             }
-//            try (BufferedWriter writer = Files.newBufferedWriter(outputPath)) {
-//                writer.write("<tokens>");
-//                writer.newLine();
-//                while (tokenizer.hasMoreTokens()) {
-//                    tokenizer.advance();
-//                    if (tokenizer.isNewToken()) {
-//                        JackToken currentToken = tokenizer.getCurrentToken();
-//                        String tag = currentToken.getType().getValue();
-//                        writer.write(" \t<" + tag + ">");
-//                        writer.write(currentToken.getLexeme());
-//                        writer.write("</" + tag + ">");
-//                        writer.newLine();
-//                    }
-//                }
-//                writer.write("</tokens>");
-//            }
         }
     }
 

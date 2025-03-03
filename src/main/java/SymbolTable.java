@@ -4,6 +4,9 @@ public class SymbolTable {
     private final HashMap<String, VariableInfo> classSymbolTable;
     private final HashMap<String, VariableInfo> subroutineSymbolTable;
     private String className;
+    private String subroutineName;
+    private String subroutineType;
+    private String subroutineReturnType;
     private int fieldCount, staticCount, argCount, localCount;
 
     public SymbolTable() {
@@ -23,8 +26,35 @@ public class SymbolTable {
         return className;
     }
 
+    public String getSubroutineName() {
+        return subroutineName;
+    }
+
+    public void setSubroutineName(String subroutineName) {
+        this.subroutineName = subroutineName;
+    }
+
+    public String getSubroutineType() {
+        return subroutineType;
+    }
+
+    public void setSubroutineType(String subroutineType) {
+        this.subroutineType = subroutineType;
+    }
+
+    public String getSubroutineReturnType() {
+        return subroutineReturnType;
+    }
+
+    public void setSubroutineReturnType(String subroutineReturnType) {
+        this.subroutineReturnType = subroutineReturnType;
+    }
+
     public void reset() {
         subroutineSymbolTable.clear();
+        subroutineName = null;
+        subroutineType = null;
+        subroutineReturnType = null;
         argCount = 0;
         localCount = 0;
     }

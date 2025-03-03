@@ -20,4 +20,23 @@ public enum MemorySegment {
         }
         return null;
     }
+
+    public static MemorySegment fromVariableKind(SymbolTable.VariableKind variableKind) {
+        MemorySegment segment = null;
+        switch (variableKind) {
+            case FIELD:
+                segment = MemorySegment.THIS;
+                break;
+            case STATIC:
+                segment = MemorySegment.STATIC;
+                break;
+            case ARG:
+                segment = MemorySegment.ARG;
+                break;
+            case VAR:
+                segment = MemorySegment.LCL;
+                break;
+        }
+        return segment;
+    }
 }
